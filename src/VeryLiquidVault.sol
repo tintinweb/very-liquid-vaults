@@ -141,7 +141,10 @@ contract VeryLiquidVault is PerformanceVault {
         uint256 length = $._strategies.length;
         for (uint256 i = 0; i < length; ++i) {
             IVault strategy = $._strategies[i];
-            total += strategy.convertToAssets(strategy.balanceOf(address(this)));
+            uint256 strategyBalance = strategy.balanceOf(address(this));
+            // slither-disable-next-line incorrect-equality
+            if (strategyBalance == 0) continue;
+            total += strategy.convertToAssets(strategyBalance);
         }
     }
 
@@ -335,6 +338,7 @@ contract VeryLiquidVault is PerformanceVault {
         onlyAuth(STRATEGIST_ROLE)
     {
         maxSlippagePercent = Math.min(maxSlippagePercent, _rebalanceMaxSlippagePercent());
+        amount = Math.min(amount, strategyFrom.maxWithdraw(address(this)));
 
         if (!_isStrategy(strategyFrom)) revert InvalidStrategy(address(strategyFrom));
         if (!_isStrategy(strategyTo)) revert InvalidStrategy(address(strategyTo));
@@ -402,6 +406,7 @@ contract VeryLiquidVault is PerformanceVault {
         uint256 length = $._strategies.length;
         for (uint256 i = 0; i < length; ++i) {
             maxAssets = Math.saturatingAdd(maxAssets, $._strategies[i].maxDeposit(address(this)));
+            if (maxAssets == type(uint256).max) break;
         }
     }
 
@@ -414,6 +419,7 @@ contract VeryLiquidVault is PerformanceVault {
         uint256 length = $._strategies.length;
         for (uint256 i = 0; i < length; ++i) {
             maxAssets = Math.saturatingAdd(maxAssets, $._strategies[i].maxWithdraw(address(this)));
+            if (maxAssets == type(uint256).max) break;
         }
     }
 
