@@ -21,6 +21,8 @@ Very Liquid Vault is a "meta" vault that allows users to deposit assets and have
 | 2025-09-11 | v0.1.0 | Open Zeppelin | [Report](./audits/2025-09-11-OpenZeppelin.pdf) |
 | 2025-07-26 | v0.0.1 | Obsidian Audits | [Report](./audits/2025-07-26-Obsidian-Audits.pdf) |
 
+For bug reports, please refer to our [Bug Bounty Program](https://cantina.xyz/bounties/c5811be1-cc87-4418-80b0-f0b50f7e5849)
+
 ## Deployments
 
 #### Ethereum
