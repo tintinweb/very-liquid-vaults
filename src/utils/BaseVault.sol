@@ -21,7 +21,7 @@ import {DEFAULT_ADMIN_ROLE, GUARDIAN_ROLE, VAULT_MANAGER_ROLE} from "@src/Auth.s
 import {IVault} from "@src/IVault.sol";
 import {ReentrancyGuardUpgradeableWithViewModifier} from "@src/utils/ReentrancyGuardUpgradeableWithViewModifier.sol";
 
-string constant VERSION = "0.1.2";
+string constant VERSION = "0.1.3";
 
 /// @title BaseVault
 /// @custom:security-contact security@size.credit
@@ -207,13 +207,16 @@ abstract contract BaseVault is
     /// @param token The address of the token to rescue
     /// @param to The address to send the rescued tokens to
     /// @dev Only addresses with GUARDIAN_ROLE can rescue tokens
-    /// @dev Reverts if the token is the address(0) or the asset of the vault
-    function rescueTokens(address token, address to) external onlyAuth(GUARDIAN_ROLE) {
-        if (token == address(0)) revert NullAddress();
-        if (token == address(asset())) revert InvalidAsset(token);
+    /// @dev Reverts if the `token` is the address(0), or the `to` address is the address(0), or if the rescue operation changes the totalAssets
+    function rescueTokens(address token, address to) external nonReentrant onlyAuth(GUARDIAN_ROLE) {
+        if (token == address(0) || to == address(0)) revert NullAddress();
 
+        uint256 totalAssetsBefore = totalAssets();
         uint256 amount = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransfer(to, amount);
+        uint256 totalAssetsAfter = totalAssets();
+
+        if (totalAssetsBefore != totalAssetsAfter) revert InvalidAsset(token);
     }
 
     // ERC20 OVERRIDES

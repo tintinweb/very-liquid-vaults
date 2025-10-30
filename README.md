@@ -126,6 +126,7 @@ For bug reports, please refer to our [Bug Bounty Program](https://cantina.xyz/bo
 9. The `reorderStrategies` function has quadtratic complexity due to duplicate detection logic, which is acceptable for the current `MAX_STRATEGIES` cap.  
 10. The system assumes that integrated strategies are honest and non-malicious. A malicious or gas-griefing strategy could revert or consume excessive gas in `totalAssets` or other operations.  
 11. Onchain price-per-share calculations of integrated vaults (e.g., `ERC4626StrategyVault.vault()` used in many markets) may increase gas costs linearly with the number of underlying markets. This can make `rebalance`, `totalAssets`, and other operations expensive.
+12. The vaults socialize losses on integrated protocols.
 
 ### Deployment
 
