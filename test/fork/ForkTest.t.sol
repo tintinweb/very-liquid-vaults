@@ -5,7 +5,9 @@ import {IPool} from "@aave/contracts/interfaces/IPool.sol";
 
 import {IERC4626} from "@openzeppelin/contracts/interfaces/IERC4626.sol";
 import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+
 import {AaveStrategyVaultScript} from "@script/AaveStrategyVault.s.sol";
+import {Addresses} from "@script/Addresses.s.sol";
 import {AuthScript} from "@script/Auth.s.sol";
 import {CashStrategyVaultScript} from "@script/CashStrategyVault.s.sol";
 import {ERC4626StrategyVaultScript} from "@script/ERC4626StrategyVault.s.sol";
@@ -16,7 +18,7 @@ import {BaseTest} from "@test/BaseTest.t.sol";
 import {PoolMock} from "@test/mocks/PoolMock.t.sol";
 import {VaultMock} from "@test/mocks/VaultMock.t.sol";
 
-contract ForkTest is BaseTest {
+contract ForkTest is BaseTest, Addresses {
     address public constant AAVE_POOL_BASE_MAINNET = 0xA238Dd80C259a72e81d7e4664a9801593F98d1c5;
     address public constant AAVE_POOL_CONFIGURATOR_BASE_MAINNET = 0x5731a04B1E775f0fdd454Bf70f3335886e9A96be;
     address public constant AAVE_POOL_ADMIN_BASE_MAINNET = 0x9390B1735def18560c509E2d0bc090E9d6BA257a;

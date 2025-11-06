@@ -15,7 +15,7 @@ import {VeryLiquidVault} from "@src/VeryLiquidVault.sol";
 import {ForkTest} from "@test/fork/ForkTest.t.sol";
 import {console} from "forge-std/console.sol";
 
-contract GasForkTest is ForkTest, Addresses {
+contract GasForkTest is ForkTest {
     using SafeERC20 for IERC20Metadata;
 
     VeryLiquidVault public vlv;

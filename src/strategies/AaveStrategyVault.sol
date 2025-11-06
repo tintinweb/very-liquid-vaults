@@ -86,6 +86,7 @@ contract AaveStrategyVault is NonReentrantVault {
     /// @inheritdoc ERC4626Upgradeable
     /// @dev Checks Aave reserve configuration and supply cap to determine max deposit
     /// @dev Updates Superform implementation to comply with https://github.com/aave-dao/aave-v3-origin/blob/v3.4.0/src/contracts/protocol/libraries/logic/ValidationLogic.sol#L79-L85
+    /// @dev May return a higher amount than the cap due to pool().getReserveData(asset()) being stale
     /// @return The maximum deposit amount allowed by Aave
     function maxDeposit(address receiver) public view override(BaseVault) returns (uint256) {
         // check if asset is paused

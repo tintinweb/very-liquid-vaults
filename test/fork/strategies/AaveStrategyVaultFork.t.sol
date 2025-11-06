@@ -86,4 +86,46 @@ contract AaveStrategyVaultForkTest is ForkTest {
 
         assertGt(redeemedAssets, amount);
     }
+
+    function testFork_AaveStrategyVault_maxDeposit_stale_data() public {
+        vm.rollFork(37827774);
+        aaveStrategyVault = AaveStrategyVault(addresses[block.chainid][Contract.AaveStrategyVault]);
+        address user = makeAddr("user");
+        uint256 max1 = aaveStrategyVault.maxDeposit(user);
+        skip(365 days); // Time passes and liquidity index is pending to grow (365 days is obviously an overexaggeration for clarity purposes, usual would be max a few blocks). Uncomment and see that the expected revert won't trigger.
+        uint256 max2 = aaveStrategyVault.maxDeposit(user);
+        assertEq(max1, max2); // Stays same as it uses stale data.
+        assertEq(max1, 141615331463418);
+
+        deal(USDC_BASE_MAINNET, user, 2 * max1); // Deal a lot.
+        vm.startPrank(user);
+        IERC20(USDC_BASE_MAINNET).approve(address(pool), type(uint256).max);
+        vm.expectRevert(abi.encodeWithSignature("SupplyCapExceeded()"));
+        pool.supply(USDC_BASE_MAINNET, max1 - 100, user, 0); // Under the max, but will fail.
+
+        pool.supply(USDC_BASE_MAINNET, max1 / 2, user, 0); // A lot under the max for it to work.
+    }
+
+    function testForkFuzz_AaveStrategyVault_deposit_maxDeposit(uint256 dt) public {
+        vm.rollFork(37827774);
+        aaveStrategyVault = AaveStrategyVault(addresses[block.chainid][Contract.AaveStrategyVault]);
+        address user = makeAddr("user");
+        uint256 max1 = aaveStrategyVault.maxDeposit(user);
+        dt = bound(dt, 1, 365 days);
+        skip(dt);
+        uint256 max2 = aaveStrategyVault.maxDeposit(user);
+        assertEq(max1, max2);
+
+        deal(USDC_BASE_MAINNET, user, 2 * max2);
+        vm.startPrank(user);
+        IERC20(USDC_BASE_MAINNET).approve(address(aaveStrategyVault), type(uint256).max);
+        try aaveStrategyVault.deposit(max2, user) {}
+        catch (bytes memory err) {
+            assertEq(bytes4(err), bytes4(abi.encodeWithSignature("SupplyCapExceeded()")));
+        }
+    }
+
+    function testFork_AaveStrategyVault_deposit_maxDeposit_concrete() public {
+        testForkFuzz_AaveStrategyVault_deposit_maxDeposit(31535999);
+    }
 }
