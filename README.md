@@ -1,4 +1,6 @@
-# very-liquid-vaults [![Coverage Status](https://coveralls.io/repos/github/SizeCredit/very-liquid-vaults/badge.svg?branch=main)](https://coveralls.io/github/SizeCredit/very-liquid-vaults?branch=main) [![CI](https://github.com/SizeCredit/very-liquid-vaults/actions/workflows/ci.yml/badge.svg)](https://github.com/SizeCredit/very-liquid-vaults/actions/workflows/ci.yml)
+# THIS REPOSITORY WAS MOVED TO https://github.com/rheo-xyz/very-liquid-vaults
+
+## very-liquid-vaults [![Coverage Status](https://coveralls.io/repos/github/SizeCredit/very-liquid-vaults/badge.svg?branch=main)](https://coveralls.io/github/SizeCredit/very-liquid-vaults?branch=main) [![CI](https://github.com/SizeCredit/very-liquid-vaults/actions/workflows/ci.yml/badge.svg)](https://github.com/SizeCredit/very-liquid-vaults/actions/workflows/ci.yml)
 
 A modular, upgradeable ERC4626 vault system that enables flexible asset management through multiple investment strategies.
 
