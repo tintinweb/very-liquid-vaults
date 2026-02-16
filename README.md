@@ -4,7 +4,7 @@
 
 A modular, upgradeable ERC4626 vault system that enables flexible asset management through multiple investment strategies.
 
-## Overview
+## Overview                      
 
 Very Liquid Vault is a "meta" vault that allows users to deposit assets and have them automatically allocated across multiple investment strategies. The system is built with upgradeability and modularity in mind, featuring role-based access control and comprehensive strategy management. The design is influenced by [yearn's yVaults v3](https://docs.yearn.fi/developers/v3/overview).
 
